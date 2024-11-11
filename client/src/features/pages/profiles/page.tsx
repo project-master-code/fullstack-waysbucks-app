@@ -29,7 +29,8 @@ const myTransactions = [
     toppings: ['Bill Berry Boba', 'Bubble Tea Gelatin'],
     status: 'On The Way',
     subtotal: 'Rp.97.000',
-    qrCodeImage: '/placeholder.svg',
+    qrCodeImage:
+      'https://res.cloudinary.com/dje40bx3b/image/upload/v1731327222/waysBucks/yr0uoj1taurblxi9bwct.png',
   },
   {
     id: 2,
@@ -51,7 +52,8 @@ const myTransactions = [
     toppings: ['Green Tea Boba', 'Mango Popping Pearl'],
     status: 'Completed',
     subtotal: 'Rp.57.000',
-    qrCodeImage: '/placeholder.svg',
+    qrCodeImage:
+      'https://res.cloudinary.com/dje40bx3b/image/upload/v1731327222/waysBucks/yr0uoj1taurblxi9bwct.png',
   },
 ];
 
@@ -122,20 +124,21 @@ export default function ProfilePage() {
                     </div>
                   ))}
                 </div>
-                <div className="flex flex-col">
+                <div className="flex flex-col justify-center items-center">
                   <img
                     src={
                       'https://res.cloudinary.com/dje40bx3b/image/upload/v1731300001/waysBucks/logo/otyzlepsneltzahkyc8w.png'
                     }
                     alt="Waysbucks Logo"
-                    width={40}
-                    height={40}
+                    width={60}
+                    height={60}
                   />
                   <img
+                    className="mt-10"
                     src={transaction.qrCodeImage}
                     alt="QR Code"
-                    width={80}
-                    height={80}
+                    width={120}
+                    height={120}
                   />
                 </div>
               </div>

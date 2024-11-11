@@ -1,4 +1,4 @@
-import { Button } from '@/components/ui/button';
+import { Header } from '@/components/layouts/header';
 import { Link } from 'react-router-dom';
 
 export const products = [
@@ -35,7 +35,8 @@ export const products = [
 export default function HomePage() {
   return (
     <div className="min-h-screen bg-white">
-      <header className="flex items-center justify-between px-4 py-4 border-b">
+      <Header />
+      {/* <header className="flex items-center justify-between px-4 py-4 border-b">
         <Link
           to="/"
           className="flex items-center"
@@ -63,12 +64,12 @@ export default function HomePage() {
             </Button>
           </Link>
         </div>
-      </header>
+      </header> */}
 
       <main className="container mx-auto px-4 py-8 text-left">
-        <section className="bg-red-600 rounded-lg p-8 mb-12 text-white relative overflow-hidden ">
-          <div className="max-w-2xl">
-            <h1 className="text-4xl font-bold mb-4">WAYSBUCKS</h1>
+        <section className="bg-white rounded-lg p-8 mb-12 text-white relative overflow-hidden ">
+          {/* <div className="max-w-2xl"> */}
+          {/* <h1 className="text-4xl font-bold mb-4">WAYSBUCKS</h1>
             <p className="text-xl mb-4">
               Things are changing, but we're still here for you
             </p>
@@ -91,8 +92,13 @@ export default function HomePage() {
               width={400}
               height={300}
               className="object-cover h-full"
-            />
-          </div>
+            /> */}
+          {/* </div> */}
+          <img
+            src="https://res.cloudinary.com/dje40bx3b/image/upload/v1731325298/waysBucks/hm3uh8qoxtgqbkhrsva7.png"
+            alt="logo"
+            className="w-full h-full object-contain"
+          />
         </section>
 
         <section>
@@ -101,7 +107,7 @@ export default function HomePage() {
             {products.map((product, index) => (
               <Link
                 key={index}
-                to={`/product/${index}`}
+                to={`/detail`}
                 className="bg-pink-50 rounded-lg p-4 transition-transform hover:scale-105"
               >
                 <div className="relative w-full h-48">

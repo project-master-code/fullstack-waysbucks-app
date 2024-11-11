@@ -1,6 +1,8 @@
 import cors from 'cors';
 import express, { Express } from 'express';
 import Authrouter from './routes/auth.router';
+import ProductRouter from './routes/product.router';
+import ToppingRouter from './routes/topping.router';
 
 const app: Express = express();
 
@@ -12,5 +14,7 @@ app.use(cors());
 // ROUTES
 // ===========================================s======================
 app.use('/api/auth', Authrouter);
+app.use('/api/product', ProductRouter);
+app.use('/api/topping', ToppingRouter);
 
 export default app;

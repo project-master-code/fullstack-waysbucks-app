@@ -1,3 +1,5 @@
+import LoginPage from '@/features/auth/login/page';
+import RegisterPage from '@/features/auth/register/page';
 import AdminPage from '@/features/pages/admin/page';
 import CartPage from '@/features/pages/cart/page';
 import DetailPage from '@/features/pages/details/page';
@@ -12,11 +14,11 @@ export function AppRouter() {
     },
     {
       path: '/login',
-      element: <>Hello dari login</>,
+      element: <LoginPage />,
     },
     {
       path: '/register',
-      element: <>Hello dari register</>,
+      element: <RegisterPage />,
     },
     {
       path: '/profile',

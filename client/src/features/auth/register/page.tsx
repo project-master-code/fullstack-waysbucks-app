@@ -1,10 +1,33 @@
+import { RegisterAsync } from '@/app/stores/auth/async';
+import { useAppDispatch } from '@/app/stores/stores';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Link } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
+import { Link, useNavigate } from 'react-router-dom';
+
+interface RegisterData {
+  email: string;
+  password: string;
+  fullname: string;
+}
 
 export default function RegisterPage() {
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<RegisterData>();
+
+  const handleRegisterSubmit = async (data: RegisterData) => {
+    const res = await dispatch(RegisterAsync(data));
+    if (RegisterAsync.fulfilled.match(res)) {
+      navigate('/login');
+    }
+  };
   return (
     <div className="min-h-screen flex items-center justify-center bg-white p-4">
       <div className="w-full max-w-md space-y-8">
@@ -14,7 +37,31 @@ export default function RegisterPage() {
               Register
             </h1>
           </div>
-          <form className="space-y-4">
+          <form
+            onSubmit={handleSubmit(handleRegisterSubmit)}
+            className="space-y-4"
+          >
+            <div className="space-y-2">
+              <Label
+                htmlFor="fullName"
+                className="sr-only"
+              >
+                Full Name
+              </Label>
+              <Input
+                id="fullName"
+                placeholder="Full Name"
+                required
+                type="text"
+                {...register('fullname')}
+                className="border-red-600"
+              />
+              {errors.fullname && (
+                <p className="text-red-600 text-sm">
+                  {errors.fullname.message}
+                </p>
+              )}
+            </div>
             <div className="space-y-2">
               <Label
                 htmlFor="email"
@@ -26,9 +73,12 @@ export default function RegisterPage() {
                 id="email"
                 placeholder="Email"
                 required
-                type="email"
+                {...register('email')}
                 className="border-red-600"
               />
+              {errors.email && (
+                <p className="text-red-600 text-sm">{errors.email.message}</p>
+              )}
             </div>
             <div className="space-y-2">
               <Label
@@ -42,23 +92,14 @@ export default function RegisterPage() {
                 placeholder="Password"
                 required
                 type="password"
+                {...register('password')}
                 className="border-red-600"
               />
-            </div>
-            <div className="space-y-2">
-              <Label
-                htmlFor="fullName"
-                className="sr-only"
-              >
-                Full Name
-              </Label>
-              <Input
-                id="fullName"
-                placeholder="Full Name"
-                required
-                type="text"
-                className="border-red-600"
-              />
+              {errors.password && (
+                <p className="text-red-600 text-sm">
+                  {errors.password.message}
+                </p>
+              )}
             </div>
             <Button
               type="submit"

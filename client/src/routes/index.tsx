@@ -6,12 +6,9 @@ import DetailPage from '@/features/pages/details/page';
 import HomePage from '@/features/pages/home/page';
 import ProfilePage from '@/features/pages/profiles/page';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
+import { ProtectedRoute } from './_protected-router';
 export function AppRouter() {
   const router = createBrowserRouter([
-    {
-      path: '/',
-      element: <HomePage />,
-    },
     {
       path: '/login',
       element: <LoginPage />,
@@ -19,6 +16,14 @@ export function AppRouter() {
     {
       path: '/register',
       element: <RegisterPage />,
+    },
+    {
+      path: '/',
+      element: <HomePage />,
+    },
+    {
+      element: <ProtectedRoute role={'USER'} />,
+      children: [],
     },
     {
       path: '/profile',

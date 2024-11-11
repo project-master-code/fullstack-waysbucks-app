@@ -1,3 +1,4 @@
+import { Header } from '@/components/layouts/header';
 import { Button } from '@/components/ui/button';
 import {
   Table,
@@ -46,81 +47,87 @@ export const transactions = [
 
 export default function AdminPage() {
   return (
-    <div className="p-6">
-      <h1 className="text-2xl font-bold text-red-600 mb-6">
-        Income transaction
-      </h1>
-      <div className="rounded-lg border">
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>No</TableHead>
-              <TableHead>Name</TableHead>
-              <TableHead>Address</TableHead>
-              <TableHead>Post Code</TableHead>
-              <TableHead>Income</TableHead>
-              <TableHead>Status</TableHead>
-              <TableHead>Action</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {transactions.map((transaction) => (
-              <TableRow key={transaction.id}>
-                <TableCell>{transaction.id}</TableCell>
-                <TableCell>{transaction.name}</TableCell>
-                <TableCell>{transaction.address}</TableCell>
-                <TableCell>{transaction.postCode}</TableCell>
-                <TableCell className="text-blue-600">
-                  {transaction.income}
-                </TableCell>
-                <TableCell>
-                  <span
-                    className={`${
-                      transaction.status === 'Success'
-                        ? 'text-green-600'
-                        : transaction.status === 'Cancel'
-                        ? 'text-red-600'
-                        : transaction.status === 'Waiting Approve'
-                        ? 'text-yellow-600'
-                        : 'text-blue-600'
-                    }`}
-                  >
-                    {transaction.status}
-                  </span>
-                </TableCell>
-                <TableCell>
-                  {transaction.status === 'Waiting Approve' ? (
-                    <div className="flex gap-2">
-                      <Button
-                        variant="destructive"
-                        size="sm"
+    <div className="min-h-screen bg-white">
+      <Header />
+
+      <main className="container mx-auto px-4 py-8 text-left">
+        <div className="p-6">
+          <h1 className="text-2xl font-bold text-red-600 mb-6">
+            Income transaction
+          </h1>
+          <div className="rounded-lg border">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>No</TableHead>
+                  <TableHead>Name</TableHead>
+                  <TableHead>Address</TableHead>
+                  <TableHead>Post Code</TableHead>
+                  <TableHead>Income</TableHead>
+                  <TableHead>Status</TableHead>
+                  <TableHead>Action</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {transactions.map((transaction) => (
+                  <TableRow key={transaction.id}>
+                    <TableCell>{transaction.id}</TableCell>
+                    <TableCell>{transaction.name}</TableCell>
+                    <TableCell>{transaction.address}</TableCell>
+                    <TableCell>{transaction.postCode}</TableCell>
+                    <TableCell className="text-blue-600">
+                      {transaction.income}
+                    </TableCell>
+                    <TableCell>
+                      <span
+                        className={`${
+                          transaction.status === 'Success'
+                            ? 'text-green-600'
+                            : transaction.status === 'Cancel'
+                            ? 'text-red-600'
+                            : transaction.status === 'Waiting Approve'
+                            ? 'text-yellow-600'
+                            : 'text-blue-600'
+                        }`}
                       >
-                        Cancel
-                      </Button>
-                      <Button
-                        variant="default"
-                        size="sm"
-                        className="bg-green-600 hover:bg-green-700"
-                      >
-                        Approve
-                      </Button>
-                    </div>
-                  ) : (
-                    <div className="flex justify-center">
-                      {transaction.status === 'Success' ||
-                      transaction.status === 'On The Way' ? (
-                        <Check className="h-6 w-6 text-green-600" />
+                        {transaction.status}
+                      </span>
+                    </TableCell>
+                    <TableCell>
+                      {transaction.status === 'Waiting Approve' ? (
+                        <div className="flex gap-2">
+                          <Button
+                            variant="destructive"
+                            size="sm"
+                          >
+                            Cancel
+                          </Button>
+                          <Button
+                            variant="default"
+                            size="sm"
+                            className="bg-green-600 hover:bg-green-700"
+                          >
+                            Approve
+                          </Button>
+                        </div>
                       ) : (
-                        <X className="h-6 w-6 text-red-600" />
+                        <div className="flex justify-center">
+                          {transaction.status === 'Success' ||
+                          transaction.status === 'On The Way' ? (
+                            <Check className="h-6 w-6 text-green-600" />
+                          ) : (
+                            <X className="h-6 w-6 text-red-600" />
+                          )}
+                        </div>
                       )}
-                    </div>
-                  )}
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </div>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
+        </div>
+      </main>
     </div>
   );
 }

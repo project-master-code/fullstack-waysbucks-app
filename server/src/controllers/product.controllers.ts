@@ -1,10 +1,17 @@
 import { Request, Response } from 'express';
 import * as productService from '@services/product.service';
 import { CreateProductDTO, UpdateProductDTO } from '@dto/product.sto';
+import { uploadSingle } from '@src/utils/cloudinary';
 
 export const createProduct = async (req: Request, res: Response) => {
   try {
     const data: CreateProductDTO = req.body;
+
+    if (req.file) {
+      const { url } = await uploadSingle(req.file as Express.Multer.File);
+      data.imageUrl = url;
+    }
+    console.log(req.file);
     const product = await productService.createProduct(data);
     res.status(201).json(product);
   } catch (error) {
@@ -38,6 +45,12 @@ export const updateProduct = async (req: Request, res: Response) => {
   try {
     const productId = parseInt(req.params.id);
     const data: UpdateProductDTO = req.body;
+
+    if (req.file) {
+      const { url } = await uploadSingle(req.file as Express.Multer.File);
+      data.imageUrl = url;
+    }
+    console.log(req.file);
     const updatedProduct = await productService.updateProduct(productId, data);
     res.json(updatedProduct);
   } catch (error) {

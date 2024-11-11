@@ -7,6 +7,8 @@ import HomePage from '@/features/pages/home/page';
 import ProfilePage from '@/features/pages/profiles/page';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import { ProtectedRoute } from './_protected-router';
+import ToppingPage from '@/features/pages/topping/page';
+import ProductPage from '@/features/pages/product/page';
 export function AppRouter() {
   const router = createBrowserRouter([
     {
@@ -40,6 +42,14 @@ export function AppRouter() {
     {
       path: '/admin',
       element: <AdminPage />,
+    },
+    {
+      path: '/topping',
+      element: <ToppingPage />,
+    },
+    {
+      path: '/product',
+      element: <ProductPage />,
     },
     {
       path: '*',

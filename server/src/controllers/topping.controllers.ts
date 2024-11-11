@@ -1,10 +1,15 @@
 import { Request, Response } from 'express';
 import { CreateToppingDTO, UpdateToppingDTO } from '@dto/topping.dto';
 import * as toppingService from '@services/topping.service';
+import { uploadSingle } from '@src/utils/cloudinary';
 
 export const createTopping = async (req: Request, res: Response) => {
   try {
     const data: CreateToppingDTO = req.body;
+    if (req.file) {
+      const { url } = await uploadSingle(req.file as Express.Multer.File);
+      data.imageUrl = url;
+    }
     const topping = await toppingService.createTopping(data);
     res.status(201).json(topping);
   } catch (error) {
@@ -38,6 +43,10 @@ export const updateTopping = async (req: Request, res: Response) => {
   try {
     const toppingId = parseInt(req.params.id);
     const data: UpdateToppingDTO = req.body;
+    if (req.file) {
+      const { url } = await uploadSingle(req.file as Express.Multer.File);
+      data.imageUrl = url;
+    }
     const updatedTopping = await toppingService.updateTopping(toppingId, data);
     res.json(updatedTopping);
   } catch (error) {

@@ -1,8 +1,5 @@
-// This is your Prisma schema file,
+// This is your Prisma schema file
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
   provider = "prisma-client-js"
@@ -22,15 +19,25 @@ enum TokenType {
   ACCESS_TOKEN
 }
 
-model Users {
+enum TransactionStatus {
+  WAITING_APPROVAL
+  SUCCESS
+  CANCELLED
+  ON_THE_WAY
+  COMPLETED
+}
+
+model User {
   id       Int     @id @default(autoincrement())
   email    String  @unique
   username String?
   password String
   role     Role    @default(USER)
 
-  profile Profiles?
-  token   Token[]
+  profile      Profile?
+  tokens       Token[]
+  transactions Transaction[]
+  cartItems    CartItem[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -38,14 +45,13 @@ model Users {
   @@map("users")
 }
 
-model Profiles {
-  id       Int     @id @default(autoincrement())
-  fullname String?
-  address  String?
-  avatar   String?
+model Profile {
+  id        Int     @id @default(autoincrement())
+  fullName  String?
+  avatarUrl String?
 
-  user   Users @relation(fields: [userId], references: [id])
-  userId Int   @unique
+  user   User @relation(fields: [userId], references: [id])
+  userId Int  @unique
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -57,9 +63,122 @@ model Token {
   id     Int       @id @default(autoincrement())
   token  String
   type   TokenType
-  User   Users     @relation(fields: [userId], references: [id])
+  user   User      @relation(fields: [userId], references: [id])
   userId Int
 
   @@unique([userId, type], name: "userId_type_unique")
   @@map("tokens")
+}
+
+model Product {
+  id        Int              @id @default(autoincrement())
+  name      String
+  price     Int              @map("price_cents")
+  imageUrl  String
+  toppings  ProductTopping[]
+  orders    Order[]
+  cartItems CartItem[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("products")
+}
+
+model Topping {
+  id       Int              @id @default(autoincrement())
+  name     String           @unique
+  imageUrl String
+  products ProductTopping[]
+
+  createdAt          DateTime             @default(now())
+  updatedAt          DateTime             @updatedAt
+  TransactionTopping TransactionTopping[]
+  CartItemTopping    CartItemTopping[]
+
+  @@map("toppings")
+}
+
+model ProductTopping {
+  id        Int     @id @default(autoincrement())
+  productId Int
+  toppingId Int
+  product   Product @relation(fields: [productId], references: [id])
+  topping   Topping @relation(fields: [toppingId], references: [id])
+
+  @@index([productId, toppingId])
+  @@map("product_toppings")
+}
+
+model Transaction {
+  id              Int                  @id @default(autoincrement())
+  user            User                 @relation(fields: [userId], references: [id])
+  userId          Int
+  customerName    String
+  address         String
+  postalCode      String
+  totalIncome     Int
+  status          TransactionStatus
+  orders          Order[]
+  toppings        TransactionTopping[]
+  subtotal        Int
+  qrCodeImageUrl  String?
+  transactionDate DateTime             @default(now())
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("transactions")
+}
+
+model Order {
+  id            Int         @id @default(autoincrement())
+  transaction   Transaction @relation(fields: [transactionId], references: [id])
+  transactionId Int
+  product       Product     @relation(fields: [productId], references: [id])
+  productId     Int
+  quantity      Int
+  price         Int
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("orders")
+}
+
+model TransactionTopping {
+  id            Int         @id @default(autoincrement())
+  transactionId Int
+  toppingId     Int
+  transaction   Transaction @relation(fields: [transactionId], references: [id])
+  topping       Topping     @relation(fields: [toppingId], references: [id])
+
+  @@index([transactionId, toppingId])
+  @@map("transaction_toppings")
+}
+
+model CartItem {
+  id        Int               @id @default(autoincrement())
+  user      User              @relation(fields: [userId], references: [id])
+  userId    Int
+  product   Product           @relation(fields: [productId], references: [id])
+  productId Int
+  quantity  Int               @default(1)
+  toppings  CartItemTopping[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("cart_items")
+}
+
+model CartItemTopping {
+  id         Int      @id @default(autoincrement())
+  cartItem   CartItem @relation(fields: [cartItemId], references: [id])
+  cartItemId Int
+  topping    Topping  @relation(fields: [toppingId], references: [id])
+  toppingId  Int
+
+  @@index([cartItemId, toppingId])
+  @@map("cart_item_toppings")
 }

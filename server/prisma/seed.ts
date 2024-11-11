@@ -4,7 +4,7 @@ import { hashPassword } from '../src/utils/encryption';
 const prisma = new PrismaClient();
 
 async function main() {
-  const superAdmin = await prisma.users.upsert({
+  const superAdmin = await prisma.user.upsert({
     where: { email: 'mufid@admin.com' },
     update: {},
     create: {
@@ -14,8 +14,8 @@ async function main() {
       role: 'ADMIN',
       profile: {
         create: {
-          fullname: 'Mufid',
-          avatar: 'https://wallpapercave.com/wp/wp12549694.jpg',
+          fullName: 'Mufid',
+          avatarUrl: 'https://wallpapercave.com/wp/wp12549694.jpg',
         },
       },
     },

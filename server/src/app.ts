@@ -4,6 +4,7 @@ import Authrouter from './routes/auth.router';
 import ProductRouter from './routes/product.router';
 import ToppingRouter from './routes/topping.router';
 import OrderRouter from './routes/order.router';
+import CartRouter from './routes/cartItem.routes';
 
 const app: Express = express();
 
@@ -18,5 +19,6 @@ app.use('/api/auth', Authrouter);
 app.use('/api/product', ProductRouter);
 app.use('/api/topping', ToppingRouter);
 app.use('/api/order', OrderRouter);
+app.use('/api/cart', CartRouter);
 
 export default app;
